@@ -1,5 +1,8 @@
-
-import {GetAllTransactions, GetTransaction, CreateTransaction} from "../services/TransactionsService.js"
+import {
+  GetAllTransactions,
+  GetTransaction,
+  CreateTransaction,
+} from "../services/TransactionsService.js";
 
 /**
  @param {FastifyInstance} fastify
@@ -7,19 +10,21 @@ import {GetAllTransactions, GetTransaction, CreateTransaction} from "../services
   */
 
 export default async function routes(fastify, options) {
-  fastify.get("/", async (req, reply) => {
+  fastify.get("/transactions", async (req, reply) => {
     reply.code(200);
     return GetAllTransactions();
   });
 
-  fastify.get("/:id", async (req) => {
+  fastify.get("/transactions/:id", async (req, reply) => {
     const id = req.params.id;
+    const transaction = await GetTransaction(id);
     reply.code(200);
-    return GetTransaction(id);
+    return transaction;
   });
 
-  fastify.post("/", async (req) => {
-    const data = JSON.parse(req.body);
+  fastify.post("/transactions", async (req, reply) => {
+    const data = req.body;
+    console.log(data);
     await CreateTransaction(data);
     reply.code(201);
     return data;
