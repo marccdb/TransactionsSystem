@@ -17,16 +17,15 @@ export default async function routes(fastify, options) {
 
   fastify.get("/transactions/:id", async (req, reply) => {
     const id = req.params.id;
-    const transaction = await GetTransaction(id);
+    const returnedTransaction = await GetTransaction(id);
     reply.code(200);
-    return transaction;
+    return returnedTransaction;
   });
 
   fastify.post("/transactions", async (req, reply) => {
-    const data = req.body;
-    console.log(data);
-    await CreateTransaction(data);
+    const transactionPayload = req.body;
+    await CreateTransaction(transactionPayload);
     reply.code(201);
-    return data;
+    return transactionPayload;
   });
 }

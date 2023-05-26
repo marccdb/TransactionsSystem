@@ -18,8 +18,15 @@ export async function GetTransaction(id) {
 export async function CreateTransaction(newTransaction) {
   const createdTransaction = await prisma.transactions.create({
     data: {
-      title: newTransaction.title,
+      user_id: newTransaction.user_id,
+      wallet_id: newTransaction.wallet_id,
+      company_code: newTransaction.company_code,
+      value: newTransaction.value,
+      origin: newTransaction.origin,
       description: newTransaction.description,
+      transaction_type: newTransaction.transaction_type,
+      available_at: newTransaction.available_at,
+      expires_at: newTransaction.expires_at,
     },
   });
   return createdTransaction;
