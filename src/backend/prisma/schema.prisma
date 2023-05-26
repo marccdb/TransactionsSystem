@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model transactions {
+  id               Int       @unique @default(autoincrement())
+  user_id          Int?
+  wallet_id        Int?
+  company_code     Int?
+  value            Float?
+  origin           Int?
+  description      String?   @db.NVarChar(255)
+  transaction_type String?   @db.NVarChar(255)
+  created_at       DateTime  @default(now(), map: "DF__transacti__creat__5BE2A6F2") @db.DateTime
+  available_at     DateTime? @db.Date
+  expires_at       DateTime? @db.Date
+}
