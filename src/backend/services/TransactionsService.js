@@ -31,3 +31,16 @@ export async function CreateTransaction(newTransaction) {
   });
   return createdTransaction;
 }
+export async function GetCustomerBalance(userId) {
+  const parsedUserId = parseInt(userId);
+  const findUser = await prisma.transactions.findMany({
+    where: { user_id: parsedUserId },
+  });
+  let userBalance = 0;
+
+  findUser.forEach((element) => {
+    userBalance += element.value;
+  });
+
+  return userBalance;
+}

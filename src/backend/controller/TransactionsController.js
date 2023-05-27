@@ -2,6 +2,7 @@ import {
   GetAllTransactions,
   GetTransaction,
   CreateTransaction,
+  GetCustomerBalance,
 } from "../services/TransactionsService.js";
 
 /**
@@ -27,5 +28,15 @@ export default async function routes(fastify, options) {
     await CreateTransaction(transactionPayload);
     reply.code(201);
     return transactionPayload;
+  });
+
+  fastify.get("/transactions/balance/:userid", async (req, reply) => {
+    const userId = req.params.userid;
+    const returnedBalance = await GetCustomerBalance(userId);
+    reply.code(200);
+    return {
+      user_id: userId,
+      balance: returnedBalance,
+    };
   });
 }
