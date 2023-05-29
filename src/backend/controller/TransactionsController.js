@@ -1,8 +1,10 @@
 import {
   GetAllTransactions,
-  GetTransaction,
+  GetTransactionsFromUser,
   CreateTransaction,
   GetCustomerBalance,
+  GetOldestValidBucket,
+  GetNonExpTransactions,
 } from "../services/TransactionsService.js";
 
 /**
@@ -18,7 +20,7 @@ export default async function routes(fastify, options) {
 
   fastify.get("/transactions/:id", async (req, reply) => {
     const id = req.params.id;
-    const returnedTransaction = await GetTransaction(id);
+    const returnedTransaction = await GetTransactionsFromUser(id);
     reply.code(200);
     return returnedTransaction;
   });
@@ -38,5 +40,19 @@ export default async function routes(fastify, options) {
       user_id: userId,
       balance: returnedBalance,
     };
+  });
+
+  fastify.get("/expire/:id", async (req, reply) => {
+    const id = req.params.id;
+    const returnedTransaction = await GetOldestValidBucket(id);
+    reply.code(200);
+    return returnedTransaction;
+  });
+
+  fastify.get("/valid/:id", async (req, reply) => {
+    const id = req.params.id;
+    const returnedTransaction = await GetNonExpTransactions(id);
+    reply.code(200);
+    return returnedTransaction;
   });
 }
