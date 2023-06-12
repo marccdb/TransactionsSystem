@@ -42,7 +42,7 @@ export default async function routes(fastify, options) {
     };
   });
 
-  fastify.get("/expire/:id", async (req, reply) => {
+  fastify.get("/oldestValid/:id", async (req, reply) => {
     const id = req.params.id;
     const returnedTransaction = await GetOldestValidBucket(id);
     reply.code(200);

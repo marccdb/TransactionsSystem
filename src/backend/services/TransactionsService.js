@@ -51,7 +51,9 @@ export async function CreateTransaction(newTransaction) {
   });
 
   if (newTransaction.transaction_type === "debit") {
-    //////TBD
+    const validTransaction = GetOldestValidBucket(
+      parteInt(newTransaction.user_id),
+    );
   }
   const updateWalletBucket = new userWalletModel({
     user_ref: newTransaction.user_id,
@@ -78,11 +80,12 @@ export async function GetOldestValidBucket(id) {
 export async function GetNonExpTransactions(id) {
   const parsedId = parseInt(id);
   let currentDate = new Date().toJSON();
-  let validTransactions = await prisma.transactions.findMany({
-    where: {
+  console.log(currentDate);
+  let validTransactions = await userWalletModel
+    .find({
       user_id: parsedId,
-      expires_at: { gt: currentDate },
-    },
-  });
+      expires_at: { date: { $gte: currentDate } },
+    })
+    .exec();
   return validTransactions;
 }

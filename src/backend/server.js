@@ -1,11 +1,10 @@
 import Fastify from "fastify";
 import routes from "./controller/TransactionsController.js";
-
+const fastify = Fastify({ logger: true });
+const PORT = "3000";
 /**
  @type {import('fastify').FastifyInstance}
  */
-const fastify = Fastify({ logger: true });
-const PORT = "3000";
 
 fastify.register(routes);
 
